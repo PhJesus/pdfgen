@@ -2,13 +2,15 @@
 const express = require('express');
 const path = require('path');
 const puppeteer = require('puppeteer');
+const expressLayouts = require('express-ejs-layouts');
+const res = require('express/lib/response');
 
 const app = express();
 
 // Arquivos estáticos
 app.use(express.static('public'));
-app.use('/css', express.static(path.join(__dirname, 'public/css')));
-app.use('/img', express.static(path.join(__dirname, 'public/img')));
+app.use('/css', express.static(__dirname + 'public/css'));
+app.use('/img', express.static(__dirname + 'public/img'));
 
 // Dados p/ teste
 const dados = [
@@ -85,9 +87,9 @@ const dados = [
 ]
 
 // Setando o EJS como view engine
+app.use(expressLayouts)
 app.set('view engine', 'ejs');
 
-console.log(path.join(__dirname, 'views', 'template.ejs'))
 
 // Configurando o Puppeteer para gerar o pdf
 app.get('/pdf', async (req, res) => {
@@ -95,7 +97,7 @@ app.get('/pdf', async (req, res) => {
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
 
-    await page.goto('http://localhost:3000/', {
+    await page.goto('http://localhost:3000/view', {
         waitUntil : 'networkidle0'
     });
 
@@ -112,8 +114,12 @@ app.get('/pdf', async (req, res) => {
 })
 
 // Renderizando a pagina com EJS
-app.get('/', (req, res) => {
+app.get('/view', (req, res) => {
     res.render('template', {dados})
+})
+
+app.get('/', (req, res) => {
+    res.render('msg');
 })
 
 app.listen(3000 , () => console.log(`App rodando em http://localhost:3000`));
