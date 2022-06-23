@@ -1,0 +1,28 @@
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>E-mail</th>
+      <th>Country</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each dados}}
+      <tr>
+        <td>{{id}}</td>
+        <td>{{firstname}}</td>
+        <td>{{email}}</td>
+        <td>{{country}}</td>
+      </tr>
+    {{/each}}
+    
+  </tbody>
+  <tfoot>
+  <tr>
+    <th colspan="4">Table Footer</th>
+  </tr>
+  </tfoot>
+</table>
+
